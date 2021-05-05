@@ -37,7 +37,8 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "2":
                     throw new NotImplementedException();
                 case "3":
-                    throw new NotImplementedException();
+                    Add();
+                    return this;
                 case "4":
                     throw new NotImplementedException();
                 case "5":
@@ -89,27 +90,8 @@ namespace TabloidCLI.UserInterfaceManagers
             string input = Console.ReadLine();
             try
             {
-                if (!string.IsNullOrWhiteSpace(input))
-                {
-                    int choice = int.Parse(input);
-                    selectedAuth = authors[choice - 1];
-                }
-                else
-                {
-                    Console.WriteLine("New Author");
-
-                    Console.Write("First Name: ");
-                    selectedAuth.FirstName = Console.ReadLine();
-
-                    Console.Write("Last Name: ");
-                    selectedAuth.LastName = Console.ReadLine();
-
-                    Console.Write("Bio: ");
-                    selectedAuth.Bio = Console.ReadLine();
-
-
-                    authRepo.Insert(selectedAuth);
-                }
+                int choice = int.Parse(input);
+                selectedAuth = authors[choice - 1];
             }
             catch (Exception ex)
             {
@@ -118,8 +100,32 @@ namespace TabloidCLI.UserInterfaceManagers
 
             post.Author = selectedAuth;
 
+            BlogRepository blogRepo = new BlogRepository(_connectionString);
+            Console.Write("Choose a blog: ");
             //Waiting for blog section
-            post.Blog = null;
+            List<Blog> blogs = blogRepo.GetAll();
+            Blog selectedBlog = new Blog();
+
+            for (int i = 0; i < blogs.Count; i++)
+            {
+                Blog blog = blogs[i];
+                Console.WriteLine($" {i + 1}) {blog.Title}");
+            }
+            Console.Write("> ");
+
+            string blogInput = Console.ReadLine();
+            try
+            { 
+                int choice = int.Parse(blogInput);
+                selectedBlog = blogs[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+            }
+
+            post.Blog = selectedBlog;
+            _postRepository.Insert(post);
         }
 
         private void Edit()

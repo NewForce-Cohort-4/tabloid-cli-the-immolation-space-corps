@@ -10,7 +10,7 @@ namespace TabloidCLI.Repositories
         /* Connect to the database server */
         public BlogRepository(string connectionString) : base(connectionString) { }
 
-        /* Function to list all blogs in the database */
+        /* Return all blogs in the database */
         public List<Blog> GetAll()
         {
             using (SqlConnection conn = Connection)
@@ -97,6 +97,7 @@ namespace TabloidCLI.Repositories
             throw new NotImplementedException();
         }
 
+        /* Add a new blog to the database */
         public void Insert(Blog blog)
         {
             using (SqlConnection conn = Connection)

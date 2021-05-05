@@ -20,6 +20,8 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
+            
+
             Console.WriteLine("Post Menu");
             Console.WriteLine(" 1) List Posts");
             Console.WriteLine(" 2) Post Details");
@@ -38,9 +40,11 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "2":
                     throw new NotImplementedException();
                 case "3":
-                    throw new NotImplementedException();
+                    Add();
+                    return this;
                 case "4":
-                    throw new NotImplementedException();
+                    Edit();
+                    return this;
                 case "5":
                     throw new NotImplementedException();
                 case "0":
@@ -63,7 +67,33 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private Post Choose(string prompt = null)
         {
-            throw new NotImplementedException();
+            if (prompt == null)
+            {
+                prompt = "Please choose a post:";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Post> posts = _postRepository.GetAll();
+
+            for (int i = 0; i < posts.Count; i++)
+            {
+                Post post = posts[i];
+                Console.WriteLine($" {i + 1}) {post.Title}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return posts[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
         }
 
         private void Add()
@@ -81,56 +111,41 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.Write("Publish Date: ");
             post.PublishDateTime = DateTime.Parse(Console.ReadLine());
-            Console.Write("Choose an author (blank to add new: ");
-            List<Author> authors = authRepo.GetAll();
-            Author selectedAuth = new Author();
 
-            for (int i = 0; i < authors.Count; i++)
-            {
-                Author author = authors[i];
-                Console.WriteLine($" {i + 1}) {author.FullName}");
-            }
-            Console.Write("> ");
+            AuthorManager authorManager = new AuthorManager(this, _connectionString);
+            post.Author = authorManager.Choose();
 
-            string input = Console.ReadLine();
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(input))
-                {
-                    int choice = int.Parse(input);
-                    selectedAuth = authors[choice - 1];
-                }
-                else
-                {
-                    Console.WriteLine("New Author");
-
-                    Console.Write("First Name: ");
-                    selectedAuth.FirstName = Console.ReadLine();
-
-                    Console.Write("Last Name: ");
-                    selectedAuth.LastName = Console.ReadLine();
-
-                    Console.Write("Bio: ");
-                    selectedAuth.Bio = Console.ReadLine();
-
-
-                    authRepo.Insert(selectedAuth);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Invalid Selection");
-            }
-
-            post.Author = selectedAuth;
-
-            //Waiting for blog section
+            
             post.Blog = null;
         }
 
         private void Edit()
         {
-            throw new NotImplementedException();
+            Post postToEdit = Choose("Which post would you like to edit?");
+            if (postToEdit == null)
+            {
+                return;
+            }
+
+            Console.WriteLine();
+            Console.Write("New title (blank to leave unchanged: ");
+            string title = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                postToEdit.Title = title;
+            }
+            Console.Write("New URL (blank to leave unchanged: ");
+            string url = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                postToEdit.Url = url;
+            }
+            AuthorManager authorManager = new AuthorManager(this, _connectionString);
+            postToEdit.Author = authorManager.Choose();
+
+            postToEdit.Blog = null;
+
+            _postRepository.Update(postToEdit);
         }
 
         private void Remove()

@@ -37,6 +37,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     return this;
                 case "2":
                     Blog blog = Choose();
+                    /* Remove null when Details are fully implemented */
                     return null;
                     /*if (blog == null)
                     {
@@ -63,14 +64,14 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
+        /* List all blogs in the database to the Console */
         private void List()
         {
-            //List<Blog> blogs = _blogRepository.GetAll();
-            //foreach (Blog blog in blogs)
-            //{
-            //    Console.WriteLine(blog);
-            //}
-            throw new NotImplementedException();
+            List<Blog> blogs = _blogRepository.GetAll();
+            foreach (Blog blog in blogs)
+            {
+                Console.WriteLine(blog);
+            }
         }
 
         private Blog Choose(string prompt = null)
@@ -105,6 +106,7 @@ namespace TabloidCLI.UserInterfaceManagers
             throw new NotImplementedException();
         }
 
+        /* Add User input as a new Blog to the database */
         private void Add()
         {
             Console.WriteLine("New Blog");

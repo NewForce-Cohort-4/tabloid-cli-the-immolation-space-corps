@@ -74,36 +74,37 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
+        /* Turn User input into database entry */
+
         private Blog Choose(string prompt = null)
         {
-            //if (prompt == null)
-            //{
-            //    prompt = "Please choose a Blog:";
-            //}
+            if (prompt == null)
+            {
+                prompt = "Please choose a Blog:";
+            }
 
-            //Console.WriteLine(prompt);
+            Console.WriteLine(prompt);
 
-            //List<Blog> blogs = _blogRepository.GetAll();
+            List<Blog> blogs = _blogRepository.GetAll();
 
-            //for (int i = 0; i < blogs.Count; i++)
-            //{
-            //    Blog blog = blogs[i];
-            //    Console.WriteLine($" {i + 1}) {blog.Title}");
-            //}
-            //Console.Write("> ");
+            for (int i = 0; i < blogs.Count; i++)
+            {
+                Blog blog = blogs[i];
+                Console.WriteLine($" {i + 1}) {blog.Title}");
+            }
+            Console.Write("> ");
 
-            //string input = Console.ReadLine();
-            //try
-            //{
-            //    int choice = int.Parse(input);
-            //    return blogs[choice - 1];
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("Invalid Selection");
-            //    return null;
-            //}
-            throw new NotImplementedException();
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return blogs[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
         }
 
         /* Add User input as a new Blog to the database */
@@ -152,14 +153,14 @@ namespace TabloidCLI.UserInterfaceManagers
             throw new NotImplementedException();
         }
 
+        /* Remove a given blog in the database to the Console */
         private void Remove()
         {
-            //Author authorToDelete = Choose("Which author would you like to remove?");
-            //if (authorToDelete != null)
-            //{
-            //    _authorRepository.Delete(authorToDelete.Id);
-            //}
-            throw new NotImplementedException();
+            Blog blogToDelete = Choose("Which blog would you like to remove?");
+            if (blogToDelete != null)
+            {
+                _blogRepository.Delete(blogToDelete.Id);
+            }
         }
     }
 }

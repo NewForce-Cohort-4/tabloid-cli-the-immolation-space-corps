@@ -139,20 +139,21 @@ namespace TabloidCLI.Repositories
             throw new NotImplementedException();
         }
 
+        /* Delete a blog matching given id in the database */
+
         public void Delete(int id)
         {
-            //using (SqlConnection conn = Connection)
-            //{
-            //    conn.Open();
-            //    using (SqlCommand cmd = conn.CreateCommand())
-            //    {
-            //        cmd.CommandText = @"DELETE FROM Author WHERE id = @id";
-            //        cmd.Parameters.AddWithValue("@id", id);
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM Blog WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
 
-            //        cmd.ExecuteNonQuery();
-            //    }
-            //}
-            throw new NotImplementedException();
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

@@ -33,7 +33,8 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1":
-                    throw new NotImplementedException();
+                    List();
+                    return this;
                 case "2":
                     throw new NotImplementedException();
                 case "3":
@@ -52,7 +53,12 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            throw new NotImplementedException();
+            List<Post> posts = _postRepository.GetAll();
+            foreach (Post post in posts)
+            {
+                Console.WriteLine($"{post.Title}");
+                Console.WriteLine($"{post.Url}");
+            }
         }
 
         private Post Choose(string prompt = null)

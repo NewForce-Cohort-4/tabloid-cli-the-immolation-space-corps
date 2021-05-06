@@ -70,6 +70,8 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.Write("Content: ");
             jEntry.Content = Console.ReadLine();
+
+            _journalRepository.Insert(jEntry);
         }
 
         private void Edit()

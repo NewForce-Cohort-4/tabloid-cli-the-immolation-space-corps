@@ -70,7 +70,7 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
-        private Author Choose(string prompt = null)
+        public Author Choose(string prompt = null)
         {
             if (prompt == null)
             {

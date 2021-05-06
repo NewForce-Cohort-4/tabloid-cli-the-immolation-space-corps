@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Text;
 using TabloidCLI.Models;
@@ -17,6 +18,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _journalRepository = new JournalRepository(connectionString);
             _connectionString = connectionString;
         }
+
 
         public IUserInterfaceManager Execute()
         {
@@ -37,10 +39,10 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "2":
                     Add();
                     return this;
-                case "4":
+                case "3":
                     Edit();
                     return this;
-                case "5":
+                case "4":
                     Remove();
                     return this;
                 case "0":
@@ -63,6 +65,49 @@ namespace TabloidCLI.UserInterfaceManagers
                 Console.WriteLine();
             }
         }
+        /// <summary>
+        ///     Ticket List Journal Entries #5
+        ///         Created Choose method which combines user prompt
+        ///         and a for loop to store an iterated interger, 
+        ///         and passes the returned value - 1 to select the correct
+        ///         entry from the entries List.
+        ///         
+        ///         Method implements try/catch to notify user of an invalid selection,
+        ///         and returns a null value if this happens.
+        /// </summary>
+        public Journal Choose(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please select a journal entry:";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Journal> entries = _journalRepository.GetAll();
+
+            for (int i = 0; i < entries.Count; i++)
+            {
+                Journal entry = entries[i];
+                Console.WriteLine($" {i + 1}) {entry.Title}");
+            }
+
+            Console.Write(">> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return entries[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
+            
+
+        }
 
         private void Add()
         {
@@ -83,9 +128,18 @@ namespace TabloidCLI.UserInterfaceManagers
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        ///     Ticket List Journal Entries #5
+        ///         Updated remove method with conditional that removes a single entry
+        ///         from the DB if Choose does not return null
+        /// </summary>
         private void Remove()
         {
-            throw new NotImplementedException();
+           Journal entryToDelete = Choose("Which entry would you like to remove?");
+            if (entryToDelete != null)
+            {
+                _journalRepository.Delete(entryToDelete.Id);
+            }
         }
     }
 }

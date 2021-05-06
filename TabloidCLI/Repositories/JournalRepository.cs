@@ -1,4 +1,5 @@
 ﻿using System;
+
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using TabloidCLI.Models;
@@ -13,6 +14,10 @@ namespace TabloidCLI
     public class JournalRepository : DatabaseConnector, IRepository<Journal>
     {
         public JournalRepository(string connectionString) : base(connectionString) { }
+
+        /// <summary>
+        ///     Ticket List Journal Entries #5
+        /// </summary>
         public List<Journal> GetAll()
         {
             using (SqlConnection conn = Connection)
@@ -48,9 +53,23 @@ namespace TabloidCLI
             }
         }
 
+        /// <summary>
+        ///     Ticket Remove Journal Entry #5
+        /// </summary>
+
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM Journal WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public Journal Get(int id)

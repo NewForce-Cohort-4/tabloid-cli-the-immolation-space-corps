@@ -33,7 +33,8 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1":
-                    throw new NotImplementedException();
+                    List();
+                    return this;
                 case "2":
                     throw new NotImplementedException();
                 case "3":
@@ -53,7 +54,13 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            throw new NotImplementedException();
+            List<Post> posts = _postRepository.GetAll();
+            foreach (Post post in posts)
+            {
+                Console.WriteLine($"Title: {post.Title}");
+                Console.WriteLine($"Url: {post.Url}");
+                Console.WriteLine("");
+            }
         }
 
         private Post Choose(string prompt = null)
@@ -76,10 +83,10 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.Write("Publish Date: ");
             post.PublishDateTime = DateTime.Parse(Console.ReadLine());
-            Console.Write("Choose an author (blank to add new: ");
+            Console.Write("Choose an author: ");
             List<Author> authors = authRepo.GetAll();
             Author selectedAuth = new Author();
-
+            Console.WriteLine("");
             for (int i = 0; i < authors.Count; i++)
             {
                 Author author = authors[i];
@@ -105,7 +112,7 @@ namespace TabloidCLI.UserInterfaceManagers
             //Waiting for blog section
             List<Blog> blogs = blogRepo.GetAll();
             Blog selectedBlog = new Blog();
-
+            Console.WriteLine("");
             for (int i = 0; i < blogs.Count; i++)
             {
                 Blog blog = blogs[i];
@@ -115,7 +122,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
             string blogInput = Console.ReadLine();
             try
-            { 
+            {
                 int choice = int.Parse(blogInput);
                 selectedBlog = blogs[choice - 1];
             }

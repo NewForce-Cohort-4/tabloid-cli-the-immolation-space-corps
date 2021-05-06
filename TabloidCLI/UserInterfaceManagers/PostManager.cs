@@ -115,9 +115,9 @@ namespace TabloidCLI.UserInterfaceManagers
 
             AuthorManager authorManager = new AuthorManager(this, _connectionString);
             post.Author = authorManager.Choose();
-
-            
-            post.Blog = null;
+            BlogManager blogManager = new BlogManager(this, _connectionString);
+            post.Blog = blogManager.Choose();
+            _postRepository.Insert(post);
         }
 
         private void Edit()
@@ -142,9 +142,18 @@ namespace TabloidCLI.UserInterfaceManagers
                 postToEdit.Url = url;
             }
             AuthorManager authorManager = new AuthorManager(this, _connectionString);
-            postToEdit.Author = authorManager.Choose();
-
-            postToEdit.Blog = null;
+            Author newAuthor = authorManager.Choose();
+            if (newAuthor != null)
+            {
+                postToEdit.Author = newAuthor;
+            }
+            BlogManager blogManager = new BlogManager(this, _connectionString);
+            Blog newBlog = blogManager.Choose();
+            if (newBlog != null)
+            {
+                postToEdit.Blog = newBlog;
+            }
+            
 
             _postRepository.Update(postToEdit);
         }

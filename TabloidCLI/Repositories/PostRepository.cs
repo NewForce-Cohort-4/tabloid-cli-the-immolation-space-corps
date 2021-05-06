@@ -133,7 +133,7 @@ namespace TabloidCLI.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"UPDATE Post 
-                                           SET Title = @title, URL = @url, PublishDateTime = @publishDateTime, PostId = @postId, BlogId = @blogId
+                                           SET Title = @title, URL = @url, PublishDateTime = @publishDateTime, AuthorId = @authorId, BlogId = @blogId
                                          WHERE id = @id";
 
                     cmd.Parameters.AddWithValue("@title", post.Title);

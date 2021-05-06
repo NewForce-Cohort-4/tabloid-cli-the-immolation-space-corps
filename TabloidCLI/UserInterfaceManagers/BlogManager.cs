@@ -76,7 +76,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
         /* Turn User input into database entry */
 
-        private Blog Choose(string prompt = null)
+        public Blog Choose(string prompt = null)
         {
             if (prompt == null)
             {

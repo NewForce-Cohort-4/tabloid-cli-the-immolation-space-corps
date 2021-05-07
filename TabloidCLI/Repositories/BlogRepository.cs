@@ -45,55 +45,40 @@ namespace TabloidCLI.Repositories
         }
         public Blog Get(int id)
         {
-            //using (SqlConnection conn = Connection)
-            //{
-            //    conn.Open();
-            //    using (SqlCommand cmd = conn.CreateCommand())
-            //    {
-            //        cmd.CommandText = @"SELECT a.Id AS AuthorId,
-            //                                   a.FirstName,
-            //                                   a.LastName,
-            //                                   a.Bio,
-            //                                   t.Id AS TagId,
-            //                                   t.Name
-            //                              FROM Author a 
-            //                                   LEFT JOIN AuthorTag at on a.Id = at.AuthorId
-            //                                   LEFT JOIN Tag t on t.Id = at.TagId
-            //                             WHERE a.id = @id";
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT Id, Title, URL
+                                          FROM Blog 
+                                         WHERE Id = @id";
 
-            //        cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@id", id);
 
-            //        Author author = null;
+                    Blog blog = null;
 
-            //        SqlDataReader reader = cmd.ExecuteReader();
-            //        while (reader.Read())
-            //        {
-            //            if (author == null)
-            //            {
-            //                author = new Author()
-            //                {
-            //                    Id = reader.GetInt32(reader.GetOrdinal("AuthorId")),
-            //                    FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
-            //                    LastName = reader.GetString(reader.GetOrdinal("LastName")),
-            //                    Bio = reader.GetString(reader.GetOrdinal("Bio")),
-            //                };
-            //            }
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        if (blog == null)
+                        {
+                            blog = new Blog()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                Title = reader.GetString(reader.GetOrdinal("Title")),
+                                Url = reader.GetString(reader.GetOrdinal("URL")),
+                                
+                            };
+                        }
 
-            //            if (!reader.IsDBNull(reader.GetOrdinal("TagId")))
-            //            {
-            //                author.Tags.Add(new Tag()
-            //                {
-            //                    Id = reader.GetInt32(reader.GetOrdinal("TagId")),
-            //                    Name = reader.GetString(reader.GetOrdinal("Name")),
-            //                });
-            //            }
-            //        }
+                    }
 
-            //        reader.Close();
+                    reader.Close();
 
-            //        return author;
-            //    }
-            //}
+                    return blog;
+                }
+            }
             throw new NotImplementedException();
         }
 

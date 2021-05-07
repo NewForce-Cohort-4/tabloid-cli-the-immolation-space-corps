@@ -142,18 +142,29 @@ namespace TabloidCLI.UserInterfaceManagers
                 postToEdit.Url = url;
             }
             AuthorManager authorManager = new AuthorManager(this, _connectionString);
+            AuthorRepository authRepo = new AuthorRepository(_connectionString);
+
             Author newAuthor = authorManager.Choose();
             if (newAuthor != null)
             {
                 postToEdit.Author = newAuthor;
             }
+            else
+            {
+                postToEdit.Author = authRepo.Get(postToEdit.Author.Id);
+            }
             BlogManager blogManager = new BlogManager(this, _connectionString);
+            BlogRepository blogRepo = new BlogRepository(_connectionString);
+
             Blog newBlog = blogManager.Choose();
             if (newBlog != null)
             {
                 postToEdit.Blog = newBlog;
             }
-            
+            else
+            {
+                postToEdit.Blog = blogRepo.Get(postToEdit.Blog.Id);
+            }
 
             _postRepository.Update(postToEdit);
         }

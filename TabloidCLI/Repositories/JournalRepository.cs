@@ -98,9 +98,30 @@ namespace TabloidCLI
             }
         }
 
+        /// <summary>
+        ///     Ticket Edit Journal Entry #6
+        ///         Update method allowes user to update title, Content
+        ///         selecting the correct object by the matching Id value.
+        ///         Method **does not** allow user to modify date created.
+        /// </summary>
         public void Update(Journal entry)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Journal
+                                        SET Title = @title,
+                                            Content = @content
+                                        WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@title", entry.Title);
+                    cmd.Parameters.AddWithValue("@content", entry.Content);
+                    cmd.Parameters.AddWithValue("@id", entry.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

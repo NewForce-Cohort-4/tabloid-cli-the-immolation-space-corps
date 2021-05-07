@@ -1,4 +1,5 @@
 ﻿using System;
+
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using TabloidCLI.Models;
@@ -13,6 +14,10 @@ namespace TabloidCLI
     public class JournalRepository : DatabaseConnector, IRepository<Journal>
     {
         public JournalRepository(string connectionString) : base(connectionString) { }
+
+        /// <summary>
+        ///     Ticket List Journal Entries #5
+        /// </summary>
         public List<Journal> GetAll()
         {
             using (SqlConnection conn = Connection)
@@ -48,9 +53,23 @@ namespace TabloidCLI
             }
         }
 
+        /// <summary>
+        ///     Ticket Remove Journal Entry #5
+        /// </summary>
+
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM Journal WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public Journal Get(int id)
@@ -79,9 +98,30 @@ namespace TabloidCLI
             }
         }
 
+        /// <summary>
+        ///     Ticket Edit Journal Entry #6
+        ///         Update method allowes user to update title, Content
+        ///         selecting the correct object by the matching Id value.
+        ///         Method **does not** allow user to modify date created.
+        /// </summary>
         public void Update(Journal entry)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Journal
+                                        SET Title = @title,
+                                            Content = @content
+                                        WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@title", entry.Title);
+                    cmd.Parameters.AddWithValue("@content", entry.Content);
+                    cmd.Parameters.AddWithValue("@id", entry.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

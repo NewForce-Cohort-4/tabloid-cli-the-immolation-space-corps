@@ -112,11 +112,11 @@ namespace TabloidCLI
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"UPDATE Journal
-                                        SET Title = @title
-                                            Content = @Content
+                                        SET Title = @title,
+                                            Content = @content
                                         WHERE Id = @id";
                     cmd.Parameters.AddWithValue("@title", entry.Title);
-                    cmd.Parameters.AddWithValue("@Content", entry.Content);
+                    cmd.Parameters.AddWithValue("@content", entry.Content);
                     cmd.Parameters.AddWithValue("@id", entry.Id);
 
                     cmd.ExecuteNonQuery();

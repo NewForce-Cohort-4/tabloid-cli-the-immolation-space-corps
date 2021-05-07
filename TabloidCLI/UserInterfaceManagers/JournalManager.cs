@@ -123,9 +123,39 @@ namespace TabloidCLI.UserInterfaceManagers
             _journalRepository.Insert(jEntry);
         }
 
+        /// <summary>
+        ///     Ticket Edit Journal Entry #6
+        ///         Edit method invokes Choose method for user to select a post,
+        ///         once selected the user is prompted to update title and content,
+        ///         and notified that a blank value will return the same name.
+        ///         
+        ///         Edit method **does not** allow user to modify date created.
+        /// </summary>
         private void Edit()
         {
-            throw new NotImplementedException();
+            Journal entryToEdit = Choose("Select a journal entry to edit: ");
+            if (entryToEdit == null)
+            {
+                return;
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("**Leave field blank to keep previous title**");
+            Console.Write("New Entry Title: ");
+            string title = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                entryToEdit.Title = title;
+            }
+            Console.WriteLine("**Leave field blank to keep previous entry content**");
+            Console.Write("New Entry Content: ");
+            string content = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(content))
+            {
+                entryToEdit.Content = content;
+            }
+
+            _journalRepository.Update(entryToEdit);
         }
 
         /// <summary>

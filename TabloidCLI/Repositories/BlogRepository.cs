@@ -141,6 +141,12 @@ namespace TabloidCLI.Repositories
 
         /* Delete a blog matching given id in the database */
 
+        /// <summary>
+        ///     Added secondary DELETE query for the Post table
+        ///     IF the Blog post Id matches the Post foreign key, 
+        ///     it is also deleted.
+        /// </summary>
+
         public void Delete(int id)
         {
             using (SqlConnection conn = Connection)
@@ -148,7 +154,8 @@ namespace TabloidCLI.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"DELETE FROM Blog WHERE id = @id";
+                    cmd.CommandText = @"DELETE FROM Post WHERE BlogId = @id;
+                                        DELETE FROM Blog WHERE id = @id";
                     cmd.Parameters.AddWithValue("@id", id);
 
                     cmd.ExecuteNonQuery();

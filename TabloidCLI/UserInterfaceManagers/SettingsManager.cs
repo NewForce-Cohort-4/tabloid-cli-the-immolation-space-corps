@@ -1,12 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using TabloidCLI.Models;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
-    class SettingsManager
+    public class SettingsManager
     {
+        private IUserInterfaceManager _parentUI;
+
+        List<Settings> scheme = new List<Settings>();
+
+        Settings defaultColor = new Settings()
+        {
+            theme = "default",
+            foregroundColor = "white",
+            backgroundColor = "black"
+        };
+								
+								
+      
+
         public IUserInterfaceManager Execute()
         {
             Console.WriteLine("Settings Menu");
@@ -16,9 +29,28 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("2) Green");
             Console.WriteLine("3) Red");
             Console.WriteLine("4) Black");
+            Console.WriteLine(" 0) Go Back");
 
             Console.Write(">> ");
+            string choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    throw new NotImplementedException();
+                case "2":
+                    throw new NotImplementedException();
+                case "3":
+                    throw new NotImplementedException();
+                case "4":
+                    throw new NotImplementedException();
+                case "0":
+                    return _parentUI;
+                default:
+                    Console.WriteLine("Invalid Selection");
+                    return null;
 
+            }
         }
     }
 }
+

@@ -1,16 +1,25 @@
 ﻿using System;
+using TabloidCLI.Models;
+
+//namespace TabloidCLI.Models
+//{
+//    public Settings color = new Settings();
+//}
 
 namespace TabloidCLI.UserInterfaceManagers
 {
     public class MainMenuManager : IUserInterfaceManager
     {
 
-        private const string CONNECTION_STRING = 
+
+    private const string CONNECTION_STRING = 
             @"Data Source=localhost\SQLEXPRESS;Database=TabloidCLI;Integrated Security=True";
 
         public IUserInterfaceManager Execute()
         {
-            Console.BackgroundColor = ConsoleColor.Black;
+
+
+        Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
             Console.WriteLine("");

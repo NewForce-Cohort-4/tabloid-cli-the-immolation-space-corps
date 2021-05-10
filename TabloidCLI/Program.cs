@@ -7,6 +7,11 @@ namespace TabloidCLI
     {
         static void Main(string[] args)
         {
+            //new SettingsManager()
+            //{
+            //    public List<userSettings> scheme = new List<userSettings>();
+            //}
+
             // MainMenuManager implements the IUserInterfaceManager interface
             IUserInterfaceManager ui = new MainMenuManager();
             while (ui != null)

@@ -37,16 +37,15 @@ namespace TabloidCLI.UserInterfaceManagers
                     return this;
                 case "2":
                     Blog blog = Choose();
-                    /* Remove null when Details are fully implemented */
-                    return null;
-                    /*if (blog == null)
+                    
+                    if (blog == null)
                     {
                         return this;
                     }
                     else
                     {
                         return new BlogDetailManager(this, _connectionString, blog.Id);
-                    }*/
+                    }
                 case "3":
                     Add();
                     return this;
@@ -122,34 +121,28 @@ namespace TabloidCLI.UserInterfaceManagers
         }
         private void Edit()
         {
-            //Author authorToEdit = Choose("Which author would you like to edit?");
-            //if (authorToEdit == null)
-            //{
-            //    return;
-            //}
+            Blog blogToEdit = Choose("Which blog would you like to edit?");
+            if (blogToEdit == null)
+            {
+                return;
+            }
 
-            //Console.WriteLine();
-            //Console.Write("New first name (blank to leave unchanged: ");
-            //string firstName = Console.ReadLine();
-            //if (!string.IsNullOrWhiteSpace(firstName))
-            //{
-            //    authorToEdit.FirstName = firstName;
-            //}
-            //Console.Write("New last name (blank to leave unchanged: ");
-            //string lastName = Console.ReadLine();
-            //if (!string.IsNullOrWhiteSpace(lastName))
-            //{
-            //    authorToEdit.LastName = lastName;
-            //}
-            //Console.Write("New bio (blank to leave unchanged: ");
-            //string bio = Console.ReadLine();
-            //if (!string.IsNullOrWhiteSpace(bio))
-            //{
-            //    authorToEdit.Bio = bio;
-            //}
-
-            //_authorRepository.Update(authorToEdit);
-            throw new NotImplementedException();
+            Console.WriteLine();
+            Console.Write("New title (blank to leave unchanged): ");
+            string title = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                blogToEdit.Title = title;
+            }
+            Console.Write("New URL (blank to leave unchanged): ");
+            string url = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                blogToEdit.Url = url;
+            }
+            _blogRepository.Update(blogToEdit);
+            Console.WriteLine("Edited blog.");
+            Console.WriteLine("");
         }
 
         /* Remove a given blog in the database to the Console */

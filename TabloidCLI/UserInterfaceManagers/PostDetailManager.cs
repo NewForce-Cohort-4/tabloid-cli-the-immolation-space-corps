@@ -5,31 +5,29 @@ using TabloidCLI.Repositories;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
-    internal class BlogDetailManager : IUserInterfaceManager
+    internal class PostDetailManager : IUserInterfaceManager
     {
         private IUserInterfaceManager _parentUI;
-        private BlogRepository _blogRepository;
         private PostRepository _postRepository;
         private TagRepository _tagRepository;
-        private int _blogId;
+        private int _postId;
 
-        public BlogDetailManager(IUserInterfaceManager parentUI, string connectionString, int blogId)
+        public PostDetailManager(IUserInterfaceManager parentUI, string connectionString, int postId)
         {
             _parentUI = parentUI;
-            _blogRepository = new BlogRepository(connectionString);
             _postRepository = new PostRepository(connectionString);
             _tagRepository = new TagRepository(connectionString);
-            _blogId = blogId;
+            _postId = postId;
         }
 
         public IUserInterfaceManager Execute()
         {
-            Blog blog = _blogRepository.Get(_blogId);
-            Console.WriteLine($"{blog.Title} Details");
+            Post post = _postRepository.Get(_postId);
+            Console.WriteLine($"{post.Title} Details");
             Console.WriteLine(" 1) View");
-            Console.WriteLine(" 2) View Blog Posts");
-            Console.WriteLine(" 3) Add Tag");
-            Console.WriteLine(" 4) Remove Tag");
+            Console.WriteLine(" 2) Add Tag");
+            Console.WriteLine(" 3) Remove Tag");
+            Console.WriteLine(" 4) Note Management");
             Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
@@ -40,14 +38,13 @@ namespace TabloidCLI.UserInterfaceManagers
                     View();
                     return this;
                 case "2":
-                    ViewBlogPosts();
-                    return this;
-                case "3":
                     AddTag();
                     return this;
-                case "4":
+                case "3":
                     RemoveTag();
                     return this;
+                case "4":
+                    throw new NotImplementedException();
                 case "0":
                     return _parentUI;
                 default:
@@ -58,24 +55,25 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void View()
         {
-            Blog blog = _blogRepository.Get(_blogId);
-            Console.WriteLine($"Title: {blog.Title}");
-            Console.WriteLine($"URL: {blog.Url}");
+            Post post = _postRepository.Get(_postId);
+            Console.WriteLine($"Name: {post.Title}");
+            Console.WriteLine($"URL: {post.Url}");
+            Console.WriteLine($"Publication Date: {post.PublishDateTime}");
         }
 
-        private void ViewBlogPosts()
+        private void ViewPostPosts()
         {
             throw new NotImplementedException();
         }
 
         private void AddTag()
         {
-           throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         private void RemoveTag()
         {
-           throw new NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

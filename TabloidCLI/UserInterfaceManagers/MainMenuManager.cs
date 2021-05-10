@@ -1,10 +1,4 @@
 ﻿using System;
-using TabloidCLI.Models;
-
-//namespace TabloidCLI.Models
-//{
-//    public Settings color = new Settings();
-//}
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -18,11 +12,21 @@ namespace TabloidCLI.UserInterfaceManagers
         public IUserInterfaceManager Execute()
         {
 
+												/// <summary>
+												///     Ticket Application Background Color #19
+												///         Sample code to change console background/foreground color:
+												///         
+												///									var SampleBG = ConsoleColor.Black;
+												///									var SampleFG = ConsoleColor.White;
+												///									Console.BackgroundColor = SampleBG;
+												///									Console.ForegroundColor = SampleFG;
+												///									Console.Clear();
+												///									
+												///					- Added Option [7] for Settings sub-menu.
+												/// </summary>
 
-        Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Clear();
-            Console.WriteLine("");
+
+												Console.WriteLine("");
             Console.WriteLine("------- Tabloid - Content Management Platform -------");
             Console.WriteLine("");
             Console.WriteLine(" [❓] Choose an option from the main menu to get started.");
@@ -36,6 +40,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 4) Post Management");
             Console.WriteLine(" 5) Tag Management");
             Console.WriteLine(" 6) Search by Tag");
+												Console.WriteLine(" 7) Modify Settings");
             Console.WriteLine(" 0) Exit");
 
             Console.Write("> ");
@@ -48,6 +53,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "4": return new PostManager(this, CONNECTION_STRING);
                 case "5": return new TagManager(this, CONNECTION_STRING);
                 case "6": return new SearchManager(this, CONNECTION_STRING);
+																case "7": return new SettingsManager(this);
                 case "0":
                     Console.WriteLine("Good bye");
                     return null;

@@ -102,26 +102,21 @@ namespace TabloidCLI.Repositories
 
         public void Update(Blog blog)
         {
-            //using (SqlConnection conn = Connection)
-            //{
-            //    conn.Open();
-            //    using (SqlCommand cmd = conn.CreateCommand())
-            //    {
-            //        cmd.CommandText = @"UPDATE Author 
-            //                               SET FirstName = @firstName,
-            //                                   LastName = @lastName,
-            //                                   bio = @bio
-            //                             WHERE id = @id";
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Blog 
+                                           SET Title = @title, URL = @url
+                                         WHERE id = @id";
 
-            //        cmd.Parameters.AddWithValue("@firstName", author.FirstName);
-            //        cmd.Parameters.AddWithValue("@lastName", author.LastName);
-            //        cmd.Parameters.AddWithValue("@bio", author.Bio);
-            //        cmd.Parameters.AddWithValue("@id", author.Id);
-
-            //        cmd.ExecuteNonQuery();
-            //    }
-            //}
-            throw new NotImplementedException();
+                    cmd.Parameters.AddWithValue("@title", blog.Title);
+                    cmd.Parameters.AddWithValue("@url", blog.Url);
+                    cmd.Parameters.AddWithValue("@id", blog.Id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         /* Delete a blog matching given id in the database */

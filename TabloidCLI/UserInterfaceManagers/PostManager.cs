@@ -38,7 +38,16 @@ namespace TabloidCLI.UserInterfaceManagers
                     List();
                     return this;
                 case "2":
-                    throw new NotImplementedException();
+                    Post post = Choose();
+
+                    if (post == null)
+                    {
+                        return this;
+                    }
+                    else
+                    {
+                        return new PostDetailManager(this, _connectionString, post.Id);
+                    }
                 case "3":
                     Add();
                     return this;

@@ -57,7 +57,49 @@ FROM Post p JOIN Author a on p.AuthorId = a.Id JOIN Blog b on p.BlogId = b.Id";
 
         public Post Get(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT  p.Id as pId, p.Title as pTitle, p.URL as pURL, PublishDateTime, a.Id as aId,  FirstName, LastName, Bio, b.Id as bId, b.Title as bTitle, b.URL as bURL
+FROM Post p JOIN Author a on p.AuthorId = a.Id JOIN Blog b on p.BlogId = b.Id 
+where p.id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    Post post = null;
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        post = new Post()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("pId")),
+                            Title = reader.GetString(reader.GetOrdinal("pTitle")),
+                            Url = reader.GetString(reader.GetOrdinal("pURL")),
+                            PublishDateTime = reader.GetDateTime(reader.GetOrdinal("PublishDatetime"))
+                        };
+
+                        post.Author = new Author()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("aId")),
+                            FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                            LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                            Bio = reader.GetString(reader.GetOrdinal("Bio")),
+                        };
+
+                        post.Blog = new Blog()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("bId")),
+                            Title = reader.GetString(reader.GetOrdinal("bTitle")),
+                            Url = reader.GetString(reader.GetOrdinal("bURL")),
+                        };
+                        
+                    };
+                    reader.Close();
+
+                    return post;
+                }
+            }
         }
 
         public List<Post> GetByAuthor(int authorId)

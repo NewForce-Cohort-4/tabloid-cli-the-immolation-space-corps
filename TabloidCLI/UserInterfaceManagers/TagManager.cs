@@ -98,7 +98,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _tagRepository.Insert(tag);
             Console.WriteLine("Tag added.");
         }
-
+        
         private void Edit()
         {
             Tag tagToEdit = Choose("Which tag would you like to edit? ");
@@ -114,7 +114,13 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Remove()
         {
-            throw new NotImplementedException();
+
+            Tag tagToDelete = Choose("Which tag would you like to remove?");
+            if (tagToDelete != null)
+            {
+                _tagRepository.Delete(tagToDelete.Id);
+                Console.WriteLine("Tag deleted");
+            }
         }
     }
 }

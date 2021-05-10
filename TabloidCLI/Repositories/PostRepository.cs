@@ -179,6 +179,31 @@ where p.id = @id";
             }
         }
 
+								/// <summary>
+								///     Ticket Add Tag to Post #33
+								///         Created InsertTag method to make DB connection
+								///         and add the Id property values from the custom
+								///         objects.
+								/// </summary>
+								/// 
+								public void InsertTag(Post post, Tag tag)
+								{
+												using (SqlConnection conn = Connection)
+												{
+																conn.Open();
+																using (SqlCommand cmd = conn.CreateCommand())
+																{
+																				cmd.CommandText = @"INSERT INTO PostTag (PostId, TagId)
+																																																				VALUES (@postId, @tagId)
+																				";
+
+																				cmd.Parameters.AddWithValue("@postId", post.Id);
+																				cmd.Parameters.AddWithValue("@tagId", tag.Id);
+																				cmd.ExecuteNonQuery();
+																}
+												}
+								}
+
         public void Update(Post post)
         {
             using (SqlConnection conn = Connection)

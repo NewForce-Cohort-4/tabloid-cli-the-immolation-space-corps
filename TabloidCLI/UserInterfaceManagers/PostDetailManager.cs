@@ -66,10 +66,42 @@ namespace TabloidCLI.UserInterfaceManagers
             throw new NotImplementedException();
         }
 
-        private void AddTag()
+
+								/// <summary>
+								///     Ticket Add Tag to Post #33
+								///         Updated AddTag method to display all tags
+								///         and invoke the InsertTag method to add Post
+								///         and Tag Ids to the join table.
+								/// </summary>
+
+								private void AddTag()
         {
-            throw new NotImplementedException();
-        }
+												Post post = _postRepository.Get(_postId);
+
+												Console.WriteLine($"Which tag would you like to add to {post.Title}?");
+												List<Tag> tags = _tagRepository.GetAll();
+
+												for (int t = 0; t < tags.Count; t++)
+												{
+																Tag tag = tags[t];
+
+																Console.WriteLine($" {t + 1}) {tag.Name}");
+												}
+
+												Console.Write("> ");
+
+												string input = Console.ReadLine();
+												try
+												{
+																int choice = int.Parse(input);
+																Tag tagSelected = tags[choice - 1];
+																_postRepository.InsertTag(post, tagSelected);
+												}
+												catch (Exception ex)
+												{
+																Console.WriteLine("Invalid selection. Unable to add tag.");
+												}
+								}
 
         private void RemoveTag()
         {

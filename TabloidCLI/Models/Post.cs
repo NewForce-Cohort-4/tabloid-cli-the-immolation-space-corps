@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace TabloidCLI.Models
 {
-    public class Post
+
+				/// <summary>
+				///     Ticket Post's Tags #34
+				///         Updated the Post class with a newly instansiated List
+				///         to hold all Tags returned by the Get method.
+				/// </summary>
+				public class Post
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -12,5 +17,6 @@ namespace TabloidCLI.Models
         public DateTime PublishDateTime { get; set; }
         public Author Author { get; set; }
         public Blog Blog { get; set; }
+								public List<Tag> Tags { get; set; } = new List<Tag>();
     }
 }

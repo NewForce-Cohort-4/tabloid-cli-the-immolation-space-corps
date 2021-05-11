@@ -53,12 +53,24 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
-        private void View()
+								/// <summary>
+								///     Ticket View Post's Tags #34
+								///         Added for loop to iterate through all tags
+								///         associated with each post.
+								/// </summary>
+
+								private void View()
         {
             Post post = _postRepository.Get(_postId);
             Console.WriteLine($"Name: {post.Title}");
             Console.WriteLine($"URL: {post.Url}");
             Console.WriteLine($"Publication Date: {post.PublishDateTime}");
+												Console.WriteLine("Tags:");
+												foreach (Tag tag in post.Tags)
+												{
+																Console.WriteLine("" + tag);
+												}
+												Console.WriteLine();
         }
 
         private void ViewPostPosts()
@@ -66,14 +78,65 @@ namespace TabloidCLI.UserInterfaceManagers
             throw new NotImplementedException();
         }
 
-        private void AddTag()
+
+								/// <summary>
+								///     Ticket Add Tag to Post #33
+								///         Updated AddTag method to display all tags
+								///         and invoke the InsertTag method to add Post
+								///         and Tag Ids to the join table.
+								/// </summary>
+
+								private void AddTag()
         {
-            throw new NotImplementedException();
-        }
+												Post post = _postRepository.Get(_postId);
+
+												Console.WriteLine($"Which tag would you like to add to {post.Title}?");
+												List<Tag> tags = _tagRepository.GetAll();
+
+												for (int t = 0; t < tags.Count; t++)
+												{
+																Tag tag = tags[t];
+
+																Console.WriteLine($" {t + 1}) {tag.Name}");
+												}
+
+												Console.Write("> ");
+
+												string input = Console.ReadLine();
+												try
+												{
+																int choice = int.Parse(input);
+																Tag tagSelected = tags[choice - 1];
+																_postRepository.InsertTag(post, tagSelected);
+												}
+												catch (Exception ex)
+												{
+																Console.WriteLine("Invalid selection. Unable to add tag.");
+												}
+								}
 
         private void RemoveTag()
         {
-            throw new NotImplementedException();
-        }
+												throw new NotImplementedException();
+												//Post post = _postRepository.Get(_postId);
+
+												//Console.WriteLine($"Which tag would you like to remove from Post: {post.Title}?");
+												//List<Tag> tags = post.Tags;
+
+												//for (int i = 0; i < tags.Count; i++)
+												//{
+												//				Tag tag = tags[i];
+												//				Console.WriteLine($" {i + 1}) {tag.Name}");
+												//}
+												//Console.Write("> ");
+
+												//string input = Console.ReadLine();
+												//try
+												//{
+												//				int choice = int.Parse(input);
+												//				Tag tag = tags[choice - 1];
+												//				_postRepository
+												//}
+								}
     }
 }

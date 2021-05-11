@@ -53,12 +53,24 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
-        private void View()
+								/// <summary>
+								///     Ticket View Post's Tags #34
+								///         Added for loop to iterate through all tags
+								///         associated with each post.
+								/// </summary>
+
+								private void View()
         {
             Post post = _postRepository.Get(_postId);
             Console.WriteLine($"Name: {post.Title}");
             Console.WriteLine($"URL: {post.Url}");
             Console.WriteLine($"Publication Date: {post.PublishDateTime}");
+												Console.WriteLine("Tags:");
+												foreach (Tag tag in post.Tags)
+												{
+																Console.WriteLine("" + tag);
+												}
+												Console.WriteLine();
         }
 
         private void ViewPostPosts()

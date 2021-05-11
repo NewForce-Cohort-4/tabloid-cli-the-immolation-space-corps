@@ -16,8 +16,20 @@ namespace TabloidCLI.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT  p.Id as pId, p.Title as pTitle, p.URL as pURL, PublishDateTime, a.Id as aId,  FirstName, LastName, Bio, b.Id as bId, b.Title as bTitle, b.URL as bURL
-FROM Post p JOIN Author a on p.AuthorId = a.Id JOIN Blog b on p.BlogId = b.Id";
+                    cmd.CommandText = @"SELECT		p.Id as pId,
+																																																p.Title as pTitle, 
+																																																p.URL as pURL, 
+																																																PublishDateTime, 
+																																																a.Id as aId, 
+																																																FirstName, 
+																																																LastName, 
+																																																Bio, 
+																																																b.Id as bId,
+																																																b.Title as bTitle,
+																																																b.URL as bURL
+																																								FROM Post p 
+																																								JOIN Author a on p.AuthorId = a.Id 
+																																								JOIN Blog b on p.BlogId = b.Id";
 
                     List<Post> posts = new List<Post>();
 
@@ -55,16 +67,39 @@ FROM Post p JOIN Author a on p.AuthorId = a.Id JOIN Blog b on p.BlogId = b.Id";
             }
         }
 
-        public Post Get(int id)
+								/// <summary>
+								///     Ticket Post's Tags #34
+								///         Updated the Get method to Join data from PostTag and Tag tables
+								///         and added any non-Null result to Tags list.
+								/// </summary>
+
+								public Post Get(int id)
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT  p.Id as pId, p.Title as pTitle, p.URL as pURL, PublishDateTime, a.Id as aId,  FirstName, LastName, Bio, b.Id as bId, b.Title as bTitle, b.URL as bURL
-FROM Post p JOIN Author a on p.AuthorId = a.Id JOIN Blog b on p.BlogId = b.Id 
-where p.id = @id";
+                    cmd.CommandText = @"SELECT		p.Id as pId,
+																																																p.Title as pTitle, 
+																																																p.URL as pURL, 
+																																																PublishDateTime, 
+																																																a.Id as aId, 
+																																																FirstName, 
+																																																LastName, 
+																																																Bio, 
+																																																b.Id as bId,
+																																																b.Title as bTitle,
+																																																b.URL as bURL,
+																																																t.Id AS TagId,
+																																																t.Name
+																																								FROM Post p 
+																																												JOIN Author a on p.AuthorId = a.Id 
+																																												JOIN Blog b on p.BlogId = b.Id
+																																												LEFT JOIN PostTag pt on p.Id = pt.PostId
+																																												LEFT JOIN Tag t on t.Id = pt.TagId 
+																																								WHERE p.id = @id";
+
                     cmd.Parameters.AddWithValue("@id", id);
                     Post post = null;
 
@@ -93,6 +128,15 @@ where p.id = @id";
                             Title = reader.GetString(reader.GetOrdinal("bTitle")),
                             Url = reader.GetString(reader.GetOrdinal("bURL")),
                         };
+
+																								if(!reader.IsDBNull(reader.GetOrdinal("TagId")))
+																								{
+																												post.Tags.Add(new Tag()
+																												{
+																																Id = reader.GetInt32(reader.GetOrdinal("TagId")),
+																																Name = reader.GetString(reader.GetOrdinal("Name")),
+																												});
+																								}
                         
                     };
                     reader.Close();
